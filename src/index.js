@@ -9,13 +9,11 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  // res.statusCode = 200;
-  // res.setHeader('Content-Type', 'text/plain');
-  // res.end('Hello World\n');
 
-  if (req.url === "/") {
-        fs.readFile("index.html", function (error, pgResp) {
+  if (req.url === '/') {
+        fs.readFile('src/index.html', (error, pgResp) => {
             if (error) {
+                console.log(error);
                 res.writeHead(404);
                 res.write('Contents you are looking are Not Found');
             } else {
