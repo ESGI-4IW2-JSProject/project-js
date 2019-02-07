@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,9 @@
     "url": "https://github.com/ESGI-4IW2-JSProject/project-js/issues"
   },
   "homepage": "https://github.com/ESGI-4IW2-JSProject/project-js#readme",
-  "dependencies": {}
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "url": "^0.11.0"
+  }
 }
