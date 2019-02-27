@@ -108,6 +108,7 @@ function calendarCreate(month, year) {
                 cell.dataset.day = date;
                 cell.dataset.month = month;
                 cell.dataset.year = year;
+                cell.id = date + '/' + month + '/' + year;
                 var cellText = document.createTextNode(date);
                 p.style.width = "25px";
                 p.style.height = "25px";
@@ -118,7 +119,6 @@ function calendarCreate(month, year) {
                 row.appendChild(cell);
 
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                    // console.log(cell)
                     p.style.backgroundColor = "#007bff";
                     p.style.color = "white";
                 } // highlight today’s date
@@ -131,7 +131,7 @@ function calendarCreate(month, year) {
     }
     // put <table> in the <body>
     cardDiv.appendChild(tbl);
-
+    
     const cells = document.querySelectorAll('td');
     for (var i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', function (e) {
@@ -152,8 +152,6 @@ function setDayDetailView(eventDiv, today) {
     var eventElement = document.getElementById("event");
 
     var promise = new Promise(function (resolve, reject) {
-        // console.log(eventElement.getElementsByClassName("card")[0]);
-        // console.log(eventElement);
         if (eventElement.getElementsByClassName("card")[0] != undefined) {
             eventElement.getElementsByClassName("card")[0].remove()
         }
@@ -187,45 +185,82 @@ function setDayDetailView(eventDiv, today) {
         createEventBtn.classList.add("btn-primary");
         createEventBtn.classList.add("text-white");
         createEventBtn.classList.add("float-right");
-
+        
+        var divTask = document.createElement("div");
+        
+        divTask.id = "divTask";
+        
         createEventBtn.appendChild(createEventBtnText);
         h4Date.appendChild(h4DateText);
         h4Div.appendChild(h4Date);
         h4Div.appendChild(createEventBtn);
         div.appendChild(h4Div);
+        div.appendChild(divTask);
         eventDiv.appendChild(div);
         
         createEventBtn.addEventListener('click', function (e) {
-            var form = new Event();
-            form.createForm(div);
+            var form = new eventCreator();
+            form.createForm(h4Div);
         });
+        
     })
 }
 
-function Event(div) {
-
+function eventCreator() {
     this.createForm = function(div) {
+        var formEvent = document.createElement("form");
+        formEvent.classList.add("card");
+        formEvent.classList.add("border-primary");
+        div.appendChild(formEvent);
+        formEvent.name = "formEvent";
+        formEvent.id = "formEvent";
+
+        formEvent.style.marginTop = "15px";
+        formEvent.style.padding = "1.25rem";
         
-        var divFormEvent = document.createElement("div");
-        divFormEvent.classList.add("card");
-        divFormEvent.classList.add("border-primary");
-        divFormEvent.classList.add("card-body");
-        div.appendChild(divFormEvent);
-
-        divFormEvent.style.marginTop = "15px"
-
         var inputText = document.createElement("input");
         inputText.type = "text";
-
+        inputText.name = "task";
+        
         var inputSubmitEvent = document.createElement("input");
         inputSubmitEvent.type = "submit";
+        inputSubmitEvent.style.marginTop = "15px"
 
-        divFormEvent.appendChild(inputText);
-        divFormEvent.appendChild(inputSubmitEvent);
+        formEvent.appendChild(inputText);
+        formEvent.appendChild(inputSubmitEvent);
+
+        formEvent.addEventListener('submit', function(e) {  
+            var taskValue = document.getElementById("formEvent").elements[0].value;
+            
+            var event = new Event();
+            event.displayData(taskValue, div);
+            formEvent.remove();
+            e.preventDefault();
+        });
     };
   }
+  
+function Event() {
+    
+    this.displayData = function(task, div){
+        
+        var divTask = document.getElementById("divTask");
+        
+        var span = document.createElement("span");
+        // span.style.width = "50px"
+        var taskSpan = document.createTextNode(task);
+        // createEventBtn.classList.add("btn");
+        // createEventBtn.classList.add("btn-sm");
+        // createEventBtn.classList.add("btn-primary");
+        // createEventBtn.classList.add("text-white");
+        // createEventBtn.classList.add("float-right");
+        
+        span.appendChild(taskSpan);
+        divTask.appendChild(span);
+    }
+}
 
- function monthSwitchCreate() {
+function monthSwitchCreate() {
     var div = document.createElement("div");
     var p = document.createElement("p")
 }
