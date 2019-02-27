@@ -187,32 +187,43 @@ function setDayDetailView(eventDiv, today) {
         createEventBtn.classList.add("btn-primary");
         createEventBtn.classList.add("text-white");
         createEventBtn.classList.add("float-right");
-        createEventBtn.classList.add("addEvent");
 
         createEventBtn.appendChild(createEventBtnText);
         h4Date.appendChild(h4DateText);
         h4Div.appendChild(h4Date);
         h4Div.appendChild(createEventBtn);
-        div.appendChild(h4Div)
-        eventDiv.appendChild(div)
-
-        var classCreateEventBtn = createEventBtn.getElementsByClassName('addEvent');
-
-        classCreateEventBtn.addEventListener('click', function (e) {
-            console.log('nartural');
-            /*
-            if (e.target.hasAttribute("data-day")) {
-                [].forEach.call(cells, function(el) {
-                    el.style.border = "1px solid #dee2e6";
-                });
-                e.target.style.border = "3px solid #007bff";
-                var detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
-
-                setDayDetailView(eventDiv, detailDate)
-            }*/
+        div.appendChild(h4Div);
+        eventDiv.appendChild(div);
+        
+        createEventBtn.addEventListener('click', function (e) {
+            var form = new Event();
+            form.createForm(div);
         });
     })
 }
+
+function Event(div) {
+
+    this.createForm = function(div) {
+        
+        var divFormEvent = document.createElement("div");
+        divFormEvent.classList.add("card");
+        divFormEvent.classList.add("border-primary");
+        divFormEvent.classList.add("card-body");
+        div.appendChild(divFormEvent);
+
+        divFormEvent.style.marginTop = "15px"
+
+        var inputText = document.createElement("input");
+        inputText.type = "text";
+
+        var inputSubmitEvent = document.createElement("input");
+        inputSubmitEvent.type = "submit";
+
+        divFormEvent.appendChild(inputText);
+        divFormEvent.appendChild(inputSubmitEvent);
+    };
+  }
 
  function monthSwitchCreate() {
     var div = document.createElement("div");
