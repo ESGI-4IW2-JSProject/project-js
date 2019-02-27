@@ -141,14 +141,15 @@ function calendarCreate(month, year) {
                 });
                 e.target.style.border = "3px solid #007bff";
                 var detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
-
-                setDayDetailView(eventDiv, detailDate)
+                var dateClicked = e.target.getAttribute('data-day') + '/' + e.target.getAttribute('data-month') + '/' + e.target.getAttribute('data-year');
+                
+                setDayDetailView(eventDiv, detailDate, dateClicked)
             }
         });
     }
 }
 
-function setDayDetailView(eventDiv, today) {
+function setDayDetailView(eventDiv, today, dateClicked) {
     var eventElement = document.getElementById("event");
 
     var promise = new Promise(function (resolve, reject) {
@@ -187,6 +188,10 @@ function setDayDetailView(eventDiv, today) {
         createEventBtn.classList.add("float-right");
         
         var divTask = document.createElement("div");
+        divTask.classList.add("card");
+        divTask.style.marginTop = "15px";
+        divTask.style.display = "15px";
+        divTask.style.marginTop = "15px";
         
         divTask.id = "divTask";
         
@@ -197,21 +202,25 @@ function setDayDetailView(eventDiv, today) {
         div.appendChild(h4Div);
         div.appendChild(divTask);
         eventDiv.appendChild(div);
+
+        var eventTask = new Event();
+        eventTask.displayData(dateClicked);
         
         createEventBtn.addEventListener('click', function (e) {
             var form = new eventCreator();
-            form.createForm(h4Div);
+            form.createForm(h4Div, dateClicked);
         });
         
     })
 }
 
 function eventCreator() {
-    this.createForm = function(div) {
+
+    this.createForm = function(divForm, dateClicked) {
         var formEvent = document.createElement("form");
         formEvent.classList.add("card");
         formEvent.classList.add("border-primary");
-        div.appendChild(formEvent);
+        divForm.appendChild(formEvent);
         formEvent.name = "formEvent";
         formEvent.id = "formEvent";
 
@@ -231,9 +240,8 @@ function eventCreator() {
 
         formEvent.addEventListener('submit', function(e) {  
             var taskValue = document.getElementById("formEvent").elements[0].value;
-            
             var event = new Event();
-            event.displayData(taskValue, div);
+            event.displayDataAfterAddEvent(taskValue, dateClicked);
             formEvent.remove();
             e.preventDefault();
         });
@@ -242,21 +250,66 @@ function eventCreator() {
   
 function Event() {
     
-    this.displayData = function(task, div){
+    this.displayDataAfterAddEvent = function(task, dateClicked){
         
         var divTask = document.getElementById("divTask");
-        
+        divTask.style.padding = "10px";
+
+        var divCalendarClicked = document.getElementById(dateClicked);
+
+        var spanEvent = document.createElement("span");
+        var taskSpanEvent = document.createTextNode(task);
+        spanEvent.style.display = "none";
+        spanEvent.appendChild(taskSpanEvent);
+        divCalendarClicked.appendChild(spanEvent);
+
+        var spanEvent = document.createElement("span");
+
         var span = document.createElement("span");
-        // span.style.width = "50px"
         var taskSpan = document.createTextNode(task);
-        // createEventBtn.classList.add("btn");
-        // createEventBtn.classList.add("btn-sm");
-        // createEventBtn.classList.add("btn-primary");
-        // createEventBtn.classList.add("text-white");
-        // createEventBtn.classList.add("float-right");
-        
         span.appendChild(taskSpan);
         divTask.appendChild(span);
+    }
+    
+    this.displayData = function(dateClicked){
+        
+        var spans = document.getElementById(dateClicked).getElementsByTagName('span');
+
+        var divTask = document.getElementById("divTask");
+        for(var i = 0, l = spans.length; i < l; i++){
+            divTask.style.padding = "10px";
+            
+            var taskSpanEvent = document.createTextNode(spans[i].textContent);
+            var spanEvent = document.createElement("span");
+
+            spanEvent.appendChild(taskSpanEvent);
+            divTask.appendChild(spanEvent);
+            
+        }
+
+        /*
+
+        var divTask = document.getElementById("divTask");
+        divTask.style.padding = "10px";
+
+        var divCalendarClicked = document.getElementById(dateClicked);
+
+        var spanEvent = document.createElement("span");
+        var taskSpanEvent = document.createTextNode(task);
+        spanEvent.style.display = "none";
+        spanEvent.appendChild(taskSpanEvent);
+        divCalendarClicked.appendChild(spanEvent);
+
+        var spanEvent = document.createElement("span");
+
+        divCalendarClicked.style.border = "1px solid red";
+
+        var span = document.createElement("span");
+        var taskSpan = document.createTextNode(task);
+        span.appendChild(taskSpan);
+        divTask.appendChild(span);
+
+        */
     }
 }
 
