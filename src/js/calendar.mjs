@@ -8,7 +8,7 @@ function calendarCreate(month, year) {
         return this.getDate() + " " + months[today.getMonth()] + " " + this.getFullYear()
     };
 
-    console.log(month, year);
+    // console.log(month, year);
     var firstDay = (new Date(year, month)).getDay();
 
     //body reference
@@ -86,7 +86,7 @@ function calendarCreate(month, year) {
 
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
-            console.log(date)
+            // console.log(date)
             if (i === 0 && j < firstDay) {
                 var cell = document.createElement("td");
                 cell.style.border = "1px solid #dee2e6";
@@ -118,7 +118,7 @@ function calendarCreate(month, year) {
                 row.appendChild(cell);
 
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                    console.log(cell)
+                    // console.log(cell)
                     p.style.backgroundColor = "#007bff";
                     p.style.color = "white";
                 } // highlight today’s date
@@ -148,12 +148,12 @@ function calendarCreate(month, year) {
     }
 }
 
- function setDayDetailView(eventDiv, today) {
+function setDayDetailView(eventDiv, today) {
     var eventElement = document.getElementById("event");
 
     var promise = new Promise(function (resolve, reject) {
-        console.log(eventElement.getElementsByClassName("card")[0]);
-        console.log(eventElement);
+        // console.log(eventElement.getElementsByClassName("card")[0]);
+        // console.log(eventElement);
         if (eventElement.getElementsByClassName("card")[0] != undefined) {
             eventElement.getElementsByClassName("card")[0].remove()
         }
@@ -187,6 +187,7 @@ function calendarCreate(month, year) {
         createEventBtn.classList.add("btn-primary");
         createEventBtn.classList.add("text-white");
         createEventBtn.classList.add("float-right");
+        createEventBtn.classList.add("addEvent");
 
         createEventBtn.appendChild(createEventBtnText);
         h4Date.appendChild(h4DateText);
@@ -194,6 +195,22 @@ function calendarCreate(month, year) {
         h4Div.appendChild(createEventBtn);
         div.appendChild(h4Div)
         eventDiv.appendChild(div)
+
+        var classCreateEventBtn = createEventBtn.getElementsByClassName('addEvent');
+
+        classCreateEventBtn.addEventListener('click', function (e) {
+            console.log('nartural');
+            /*
+            if (e.target.hasAttribute("data-day")) {
+                [].forEach.call(cells, function(el) {
+                    el.style.border = "1px solid #dee2e6";
+                });
+                e.target.style.border = "3px solid #007bff";
+                var detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
+
+                setDayDetailView(eventDiv, detailDate)
+            }*/
+        });
     })
 }
 
