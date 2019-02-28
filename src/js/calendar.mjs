@@ -248,15 +248,42 @@ function eventCreator() {
     };
   }
   
+
+HTMLElement.prototype.getStatusLengthItemById = function (htmlItem) {
+
+    if( type_check( htmlItem, { type: "string" } ) == false){
+        console.log("Veuillez entrer un élément html.");
+        return false;
+    }
+    
+    if( this.getElementsByTagName(htmlItem).length > 0 ) {
+        return false;
+    }else{
+        return true;
+    }
+
+};
+
 function Event() {
     
     this.displayDataAfterAddEvent = function(task, dateClicked){
         
         var divTask = document.getElementById("divTask");
         divTask.style.padding = "10px";
-
+        
         var divCalendarClicked = document.getElementById(dateClicked);
-
+        var statusDiv = divCalendarClicked.getStatusLengthItemById('div');
+        
+        if( statusDiv == true ){
+            var divTaskedAdded = document.createElement("div");
+            divTaskedAdded.style.width = "20px";
+            divTaskedAdded.style.height = "20px";
+            divTaskedAdded.style.borderRadius = "10px";
+            divTaskedAdded.style.backgroundColor = "lightseagreen";
+            divTaskedAdded.id = "taskAdded";
+            divCalendarClicked.appendChild(divTaskedAdded);
+        }
+        
         var spanEvent = document.createElement("span");
         var taskSpanEvent = document.createTextNode(task);
         spanEvent.style.display = "none";
@@ -286,30 +313,6 @@ function Event() {
             divTask.appendChild(spanEvent);
             
         }
-
-        /*
-
-        var divTask = document.getElementById("divTask");
-        divTask.style.padding = "10px";
-
-        var divCalendarClicked = document.getElementById(dateClicked);
-
-        var spanEvent = document.createElement("span");
-        var taskSpanEvent = document.createTextNode(task);
-        spanEvent.style.display = "none";
-        spanEvent.appendChild(taskSpanEvent);
-        divCalendarClicked.appendChild(spanEvent);
-
-        var spanEvent = document.createElement("span");
-
-        divCalendarClicked.style.border = "1px solid red";
-
-        var span = document.createElement("span");
-        var taskSpan = document.createTextNode(task);
-        span.appendChild(taskSpan);
-        divTask.appendChild(span);
-
-        */
     }
 }
 
@@ -321,5 +324,77 @@ function monthSwitchCreate() {
  function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
 }
+
+
+
+
+function type_check_v1(data, type) {
+    switch(typeof data) {
+        case "number":
+        case "string":
+        case "boolean":
+        case "undefined":
+        case "function":
+            return type === typeof data;
+        case "object":
+            switch(type) {
+                case "null":
+                    return data === null;
+                case "array":
+                    return Array.isArray(data);
+                default:
+                    return data !== null && !Array.isArray(data);
+            }
+
+    }
+    
+    return false;
+}
+
+function type_check_v2(data, conf) {
+    for (let key of Object.keys(conf)) {
+        switch (key) {
+            case 'type':
+                if (!type_check_v1(data, conf[key])) return false;
+                break;
+            case 'value':
+                if (JSON.stringify(data) !== JSON.stringify(conf[key])) return false;
+                break;
+            case 'enum':
+                let valid = false;
+                for (let value of conf[key]) {
+                    valid = type_check_v2(data, {value});
+                    if (valid) break;
+                }
+                if(!valid) return false;
+        }
+    }
+
+    return true;
+}
+
+function type_check(data, conf) {
+    for (let key of Object.keys(conf)) {
+        switch (key) {
+            case 'type':
+            case 'value':
+            case 'enum':
+                let newConf = {};
+                newConf[key] = conf[key];
+                if (!type_check_v2(data, newConf)) return false;
+                break;
+            case 'properties':
+                for (let prop of Object.keys(conf[key])) {
+                    if (data[prop] === undefined) return false;
+                    if (!type_check(data[prop], conf[key][prop])) return false;
+                }
+                break;
+        }
+    }
+
+    return true;
+}
+
+
 
 export { calendarCreate, setDayDetailView };
