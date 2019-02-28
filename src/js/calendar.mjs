@@ -7,8 +7,7 @@ function calendarCreate(month, year) {
     Date.prototype.longFormat = function () {
         return this.getDate() + " " + months[today.getMonth()] + " " + this.getFullYear()
     };
-
-    // console.log(month, year);
+    
     var firstDay = (new Date(year, month)).getDay();
 
     //body reference
@@ -86,7 +85,6 @@ function calendarCreate(month, year) {
 
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
-            // console.log(date)
             if (i === 0 && j < firstDay) {
                 var cell = document.createElement("td");
                 cell.style.border = "1px solid #dee2e6";
