@@ -218,9 +218,18 @@ function monthChange(months,cardDiv) {
         option.setAttribute("value", months[i]);
         option.text = months[i];
         selectList.appendChild(option);
+      
     }
+    selectList.addEventListener('change', function(){
+        console.log(this.value);
+        var detailDate = new Date(e.target.dataset.year, this.value, e.target.dataset.day);
+        setDayDetailView(eventDiv, detailDate)
+      });
 
+
+   
 }
+
 
 
 export { calendarCreate, setDayDetailView };
