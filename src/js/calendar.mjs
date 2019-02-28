@@ -49,7 +49,7 @@ function calendarCreate(month, year) {
     cardDiv.appendChild(monthAndYearHeader);
 
     calDiv.appendChild(cardDiv);
-
+    monthChange(months,cardDiv);
     var tbl = document.createElement("table");
     tbl.classList.add("table");
     tbl.classList.add("table-responsive-sm");
@@ -323,8 +323,27 @@ function monthSwitchCreate() {
     return 32 - new Date(iYear, iMonth, 32).getDate();
 }
 
+function monthChange(months,cardDiv) {
+    //Create and append select list
+    var selectList = document.createElement("select");
+    selectList.setAttribute("id", "mySelect");
+    cardDiv.appendChild(selectList);
 
-
+    //Create and append the options
+    for (var i = 0; i < months.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", months[i]);
+        option.text = months[i];
+        selectList.appendChild(option);
+      
+    }
+    selectList.addEventListener('change', function(){
+        console.log(this.value);
+        var detailDate = new Date(e.target.dataset.year, this.value, e.target.dataset.day);
+        setDayDetailView(eventDiv, detailDate)
+      });
+  
+}
 
 function type_check_v1(data, type) {
     switch(typeof data) {
