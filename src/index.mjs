@@ -1,6 +1,12 @@
 import { calendarCreate, setDayDetailView } from "./js/calendar.mjs";
 import { Router } from './js/router.mjs';
 
+import { interpolate } from './js/interpolate.mjs';
+import { prop_access } from './js/prop_access.mjs';
+
+Object.prototype.prop_access = prop_access;
+String.prototype.interpolate = interpolate;
+
 var today = new Date();
 
 document.addEventListener("DOMContentLoaded", function() {

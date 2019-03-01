@@ -7,7 +7,7 @@ function calendarCreate(month, year) {
     Date.prototype.longFormat = function () {
         return this.getDate() + " " + months[today.getMonth()] + " " + this.getFullYear()
     };
-    
+
     var firstDay = (new Date(year, month)).getDay();
 
     //body reference
@@ -129,7 +129,7 @@ function calendarCreate(month, year) {
     }
     // put <table> in the <body>
     cardDiv.appendChild(tbl);
-    
+
     const cells = document.querySelectorAll('td');
     for (var i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', function (e) {
@@ -140,7 +140,7 @@ function calendarCreate(month, year) {
                 e.target.style.border = "3px solid #007bff";
                 var detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
                 var dateClicked = e.target.getAttribute('data-day') + '/' + e.target.getAttribute('data-month') + '/' + e.target.getAttribute('data-year');
-                
+
                 setDayDetailView(eventDiv, detailDate, dateClicked)
             }
         });
@@ -148,6 +148,11 @@ function calendarCreate(month, year) {
 }
 
 function setDayDetailView(eventDiv, today, dateClicked) {
+    const date = {
+      today: today,
+      dateText : today.longFormat(),
+    }
+
     var eventElement = document.getElementById("event");
 
     var promise = new Promise(function (resolve, reject) {
@@ -174,7 +179,8 @@ function setDayDetailView(eventDiv, today, dateClicked) {
 
         var h4Date = document.createElement("span");
         h4Date.classList.add("h4");
-        var h4DateText = document.createTextNode(today.longFormat());
+        const text = "Le {{ dateText }}";
+        var h4DateText = document.createTextNode(text.interpolate(date));
 
         var createEventBtn = document.createElement("a");
         createEventBtn.style.width = "50px"
@@ -184,15 +190,15 @@ function setDayDetailView(eventDiv, today, dateClicked) {
         createEventBtn.classList.add("btn-primary");
         createEventBtn.classList.add("text-white");
         createEventBtn.classList.add("float-right");
-        
+
         var divTask = document.createElement("div");
         divTask.classList.add("card");
         divTask.style.marginTop = "15px";
         divTask.style.display = "15px";
         divTask.style.marginTop = "15px";
-        
+
         divTask.id = "divTask";
-        
+
         createEventBtn.appendChild(createEventBtnText);
         h4Date.appendChild(h4DateText);
         h4Div.appendChild(h4Date);
@@ -203,12 +209,12 @@ function setDayDetailView(eventDiv, today, dateClicked) {
 
         var eventTask = new Event();
         eventTask.displayData(dateClicked);
-        
+
         createEventBtn.addEventListener('click', function (e) {
             var form = new eventCreator();
             form.createForm(h4Div, dateClicked);
         });
-        
+
     })
 }
 
@@ -224,11 +230,11 @@ function eventCreator() {
 
         formEvent.style.marginTop = "15px";
         formEvent.style.padding = "1.25rem";
-        
+
         var inputText = document.createElement("input");
         inputText.type = "text";
         inputText.name = "task";
-        
+
         var inputSubmitEvent = document.createElement("input");
         inputSubmitEvent.type = "submit";
         inputSubmitEvent.style.marginTop = "15px"
@@ -236,7 +242,7 @@ function eventCreator() {
         formEvent.appendChild(inputText);
         formEvent.appendChild(inputSubmitEvent);
 
-        formEvent.addEventListener('submit', function(e) {  
+        formEvent.addEventListener('submit', function(e) {
             var taskValue = document.getElementById("formEvent").elements[0].value;
             var event = new Event();
             event.displayDataAfterAddEvent(taskValue, dateClicked);
@@ -245,7 +251,7 @@ function eventCreator() {
         });
     };
   }
-  
+
 
 HTMLElement.prototype.getStatusLengthItemById = function (htmlItem) {
 
@@ -253,7 +259,7 @@ HTMLElement.prototype.getStatusLengthItemById = function (htmlItem) {
         console.log("Veuillez entrer un élément html.");
         return false;
     }
-    
+
     if( this.getElementsByTagName(htmlItem).length > 0 ) {
         return false;
     }else{
@@ -263,15 +269,15 @@ HTMLElement.prototype.getStatusLengthItemById = function (htmlItem) {
 };
 
 function Event() {
-    
+
     this.displayDataAfterAddEvent = function(task, dateClicked){
-        
+
         var divTask = document.getElementById("divTask");
         divTask.style.padding = "10px";
-        
+
         var divCalendarClicked = document.getElementById(dateClicked);
         var statusDiv = divCalendarClicked.getStatusLengthItemById('div');
-        
+
         if( statusDiv == true ){
             var divTaskedAdded = document.createElement("div");
             divTaskedAdded.style.width = "20px";
@@ -281,7 +287,7 @@ function Event() {
             divTaskedAdded.id = "taskAdded";
             divCalendarClicked.appendChild(divTaskedAdded);
         }
-        
+
         var spanEvent = document.createElement("span");
         var taskSpanEvent = document.createTextNode(task);
         spanEvent.style.display = "none";
@@ -295,21 +301,21 @@ function Event() {
         span.appendChild(taskSpan);
         divTask.appendChild(span);
     }
-    
+
     this.displayData = function(dateClicked){
-        
+
         var spans = document.getElementById(dateClicked).getElementsByTagName('span');
 
         var divTask = document.getElementById("divTask");
         for(var i = 0, l = spans.length; i < l; i++){
             divTask.style.padding = "10px";
-            
+
             var taskSpanEvent = document.createTextNode(spans[i].textContent);
             var spanEvent = document.createElement("span");
 
             spanEvent.appendChild(taskSpanEvent);
             divTask.appendChild(spanEvent);
-            
+
         }
     }
 }
@@ -335,14 +341,14 @@ function monthChange(months,cardDiv) {
         option.setAttribute("value", months[i]);
         option.text = months[i];
         selectList.appendChild(option);
-      
+
     }
     selectList.addEventListener('change', function(){
         console.log(this.value);
         var detailDate = new Date(e.target.dataset.year, this.value, e.target.dataset.day);
         setDayDetailView(eventDiv, detailDate)
       });
-  
+
 }
 
 function type_check_v1(data, type) {
@@ -364,7 +370,7 @@ function type_check_v1(data, type) {
             }
 
     }
-    
+
     return false;
 }
 
