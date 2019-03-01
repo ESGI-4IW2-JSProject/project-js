@@ -1,4 +1,4 @@
-export var Router = {
+export const Router = {
     routes: [],
     mode: null,
     root: '/',
@@ -9,13 +9,13 @@ export var Router = {
         return this;
     },
     getFragment: function() {
-        var fragment = '';
+        let fragment = '';
         if(this.mode === 'history') {
             fragment = this.clearSlashes(decodeURI(location.pathname + location.search));
             fragment = fragment.replace(/\?(.*)$/, '');
             fragment = this.root != '/' ? fragment.replace(this.root, '') : fragment;
         } else {
-            var match = window.location.href.match(/#(.*)$/);
+            let match = window.location.href.match(/#(.*)$/);
             fragment = match ? match[1] : '';
         }
         return this.clearSlashes(fragment);
@@ -32,7 +32,7 @@ export var Router = {
         return this;
     },
     remove: function(param) {
-        for(var i=0, r; i<this.routes.length, r = this.routes[i]; i++) {
+        for(let i=0, r; i<this.routes.length, r = this.routes[i]; i++) {
             if(r.handler === param || r.re.toString() === param.toString()) {
                 this.routes.splice(i, 1);
                 return this;
@@ -41,9 +41,9 @@ export var Router = {
         return this;
     },
     check: function(f) {
-        var fragment = f || this.getFragment();
-        for(var i=0; i<this.routes.length; i++) {
-            var match = fragment.match(this.routes[i].re);
+        let fragment = f || this.getFragment();
+        for(let i=0; i<this.routes.length; i++) {
+            let match = fragment.match(this.routes[i].re);
             if(match) {
                 match.shift();
                 this.routes[i].handler.apply({}, match);
@@ -53,9 +53,9 @@ export var Router = {
         return this;
     },
     listen: function() {
-        var self = this;
-        var current = self.getFragment();
-        var fn = function() {
+        let self = this;
+        let current = self.getFragment();
+        let fn = function() {
             if(current !== self.getFragment()) {
                 current = self.getFragment();
                 self.check(current);

@@ -1,24 +1,24 @@
 import { today } from '../index.mjs'
 
 function calendarCreate(month, year) {
-    var days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-    var months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+    let months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
     Date.prototype.longFormat = function () {
         return this.getDate() + " " + months[today.getMonth()] + " " + this.getFullYear()
     };
 
-    var firstDay = (new Date(year, month)).getDay();
+    let firstDay = (new Date(year, month)).getDay();
 
     //body reference
     const root = document.getElementById('root');
 
-    var row = document.createElement("div");
+    let row = document.createElement("div");
 
     row.classList.add("row");
 
-    var calDiv = document.createElement("div");
-    var eventDiv = document.createElement("div");
+    let calDiv = document.createElement("div");
+    let eventDiv = document.createElement("div");
     eventDiv.id = "event";
 
     calDiv.classList.add("col-7");
@@ -32,13 +32,13 @@ function calendarCreate(month, year) {
     row.appendChild(calDiv);
     row.appendChild(eventDiv);
 
-    var cardDiv = document.createElement("div");
+    let cardDiv = document.createElement("div");
 
     cardDiv.classList.add("card");
     cardDiv.classList.add("border-primary");
 
-    var monthAndYearHeader = document.createElement("h3");
-    var monthAndYearHeaderText = document.createTextNode(months[month] + " " + year);
+    let monthAndYearHeader = document.createElement("h3");
+    let monthAndYearHeaderText = document.createTextNode(months[month] + " " + year);
 
     monthAndYearHeader.classList.add("card-header");
     monthAndYearHeader.classList.add("bg-primary");
@@ -50,21 +50,21 @@ function calendarCreate(month, year) {
 
     calDiv.appendChild(cardDiv);
     monthChange(months,cardDiv);
-    var tbl = document.createElement("table");
+    let tbl = document.createElement("table");
     tbl.classList.add("table");
     tbl.classList.add("table-responsive-sm");
     tbl.style.marginBottom = "1px";
 
     tbl.style.tableLayout = "fixed";
 
-    var daysRow = document.createElement("tr");
+    let daysRow = document.createElement("tr");
 
     for (let i = 0; i < 7; i++) {
         // create element <td> and text node
         //Make text node the contents of <td> element
         // put <td> at end of the table row
-        var dayCell = document.createElement("td");
-        var dayCellText = document.createTextNode(days[i]);
+        let dayCell = document.createElement("td");
+        let dayCellText = document.createTextNode(days[i]);
 
         dayCell.style.border = "1px solid #dee2e6";
         dayCell.style.fontWeight = "bold";
@@ -77,8 +77,8 @@ function calendarCreate(month, year) {
 
     tbl.appendChild(daysRow);
 
-    var date = 1;
-    var lastRow = 0;
+    let date = 1;
+    let lastRow = 0;
     for (let  i = 0; i < 6; i++) {
         // creates a table row
         row = document.createElement("tr");
@@ -86,11 +86,11 @@ function calendarCreate(month, year) {
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
             if (i === 0 && j < firstDay) {
-                var cell = document.createElement("td");
+                let cell = document.createElement("td");
                 cell.style.border = "1px solid #dee2e6";
                 cell.style.backgroundColor = "#eeeeee";
                 cell.style.height = "80px";
-                var cellText = document.createTextNode("");
+                let cellText = document.createTextNode("");
                 cell.appendChild(cellText);
                 row.appendChild(cell);
             }
@@ -100,14 +100,14 @@ function calendarCreate(month, year) {
             else {
                 cell = document.createElement("td");
                 cell.style.padding = "6px";
-                var p = document.createElement("p");
+                let p = document.createElement("p");
                 cell.style.height = "80px";
                 cell.style.border = "1px solid #dee2e6";
                 cell.dataset.day = date;
                 cell.dataset.month = month;
                 cell.dataset.year = year;
                 cell.id = date + '/' + month + '/' + year;
-                var cellText = document.createTextNode(date);
+                let cellText = document.createTextNode(date);
                 p.style.width = "25px";
                 p.style.height = "25px";
                 p.style.textAlign = "center";
@@ -131,15 +131,15 @@ function calendarCreate(month, year) {
     cardDiv.appendChild(tbl);
 
     const cells = document.querySelectorAll('td');
-    for (var i = 0; i < cells.length; i++) {
+    for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', function (e) {
             if (e.target.hasAttribute("data-day")) {
                 [].forEach.call(cells, function(el) {
                     el.style.border = "1px solid #dee2e6";
                 });
                 e.target.style.border = "3px solid #007bff";
-                var detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
-                var dateClicked = e.target.getAttribute('data-day') + '/' + e.target.getAttribute('data-month') + '/' + e.target.getAttribute('data-year');
+                let detailDate = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
+                let dateClicked = e.target.getAttribute('data-day') + '/' + e.target.getAttribute('data-month') + '/' + e.target.getAttribute('data-year');
 
                 setDayDetailView(eventDiv, detailDate, dateClicked)
             }
@@ -153,9 +153,9 @@ function setDayDetailView(eventDiv, today, dateClicked) {
       dateText : today.longFormat(),
     }
 
-    var eventElement = document.getElementById("event");
+    let eventElement = document.getElementById("event");
 
-    var promise = new Promise(function (resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {
         if (eventElement.getElementsByClassName("card")[0] != undefined) {
             eventElement.getElementsByClassName("card")[0].remove()
         }
@@ -164,34 +164,34 @@ function setDayDetailView(eventDiv, today, dateClicked) {
 
 
     promise.then(function () {
-        var div = document.createElement("div");
+        let div = document.createElement("div");
         div.classList.add("card");
         div.classList.add("border-primary");
         div.classList.add("mb-3");
         div.classList.add("h-100");
 
-        var divBody = document.createElement("div");
+        let divBody = document.createElement("div");
         div.classList.add("card-body");
 
-        var h4Div = document.createElement("div");
+        let h4Div = document.createElement("div");
 
         h4Div.classList.add("text-primary");
 
-        var h4Date = document.createElement("span");
+        let h4Date = document.createElement("span");
         h4Date.classList.add("h4");
         const text = "Le {{ dateText }}";
-        var h4DateText = document.createTextNode(text.interpolate(date));
+        let h4DateText = document.createTextNode(text.interpolate(date));
 
-        var createEventBtn = document.createElement("a");
+        let createEventBtn = document.createElement("a");
         createEventBtn.style.width = "50px"
-        var createEventBtnText = document.createTextNode("+");
+        let createEventBtnText = document.createTextNode("+");
         createEventBtn.classList.add("btn");
         createEventBtn.classList.add("btn-sm");
         createEventBtn.classList.add("btn-primary");
         createEventBtn.classList.add("text-white");
         createEventBtn.classList.add("float-right");
 
-        var divTask = document.createElement("div");
+        let divTask = document.createElement("div");
         divTask.classList.add("card");
         divTask.style.marginTop = "15px";
         divTask.style.display = "15px";
@@ -207,11 +207,11 @@ function setDayDetailView(eventDiv, today, dateClicked) {
         div.appendChild(divTask);
         eventDiv.appendChild(div);
 
-        var eventTask = new Event();
+        let eventTask = new Event();
         eventTask.displayData(dateClicked);
 
         createEventBtn.addEventListener('click', function (e) {
-            var form = new eventCreator();
+            let form = new eventCreator();
             form.createForm(h4Div, dateClicked);
         });
 
@@ -221,7 +221,7 @@ function setDayDetailView(eventDiv, today, dateClicked) {
 function eventCreator() {
 
     this.createForm = function(divForm, dateClicked) {
-        var formEvent = document.createElement("form");
+        let formEvent = document.createElement("form");
         formEvent.classList.add("card");
         formEvent.classList.add("border-primary");
         divForm.appendChild(formEvent);
@@ -231,11 +231,11 @@ function eventCreator() {
         formEvent.style.marginTop = "15px";
         formEvent.style.padding = "1.25rem";
 
-        var inputText = document.createElement("input");
+        let inputText = document.createElement("input");
         inputText.type = "text";
         inputText.name = "task";
 
-        var inputSubmitEvent = document.createElement("input");
+        let inputSubmitEvent = document.createElement("input");
         inputSubmitEvent.type = "submit";
         inputSubmitEvent.style.marginTop = "15px"
 
@@ -243,8 +243,8 @@ function eventCreator() {
         formEvent.appendChild(inputSubmitEvent);
 
         formEvent.addEventListener('submit', function(e) {
-            var taskValue = document.getElementById("formEvent").elements[0].value;
-            var event = new Event();
+            let taskValue = document.getElementById("formEvent").elements[0].value;
+            let event = new Event();
             event.displayDataAfterAddEvent(taskValue, dateClicked);
             formEvent.remove();
             e.preventDefault();
@@ -272,14 +272,14 @@ function Event() {
 
     this.displayDataAfterAddEvent = function(task, dateClicked){
 
-        var divTask = document.getElementById("divTask");
+        let divTask = document.getElementById("divTask");
         divTask.style.padding = "10px";
 
-        var divCalendarClicked = document.getElementById(dateClicked);
-        var statusDiv = divCalendarClicked.getStatusLengthItemById('div');
+        let divCalendarClicked = document.getElementById(dateClicked);
+        let statusDiv = divCalendarClicked.getStatusLengthItemById('div');
 
         if( statusDiv == true ){
-            var divTaskedAdded = document.createElement("div");
+            let divTaskedAdded = document.createElement("div");
             divTaskedAdded.style.width = "20px";
             divTaskedAdded.style.height = "20px";
             divTaskedAdded.style.borderRadius = "10px";
@@ -288,30 +288,30 @@ function Event() {
             divCalendarClicked.appendChild(divTaskedAdded);
         }
 
-        var spanEvent = document.createElement("span");
-        var taskSpanEvent = document.createTextNode(task);
+        let spanEvent = document.createElement("span");
+        let taskSpanEvent = document.createTextNode(task);
         spanEvent.style.display = "none";
         spanEvent.appendChild(taskSpanEvent);
         divCalendarClicked.appendChild(spanEvent);
 
-        var spanEvent = document.createElement("span");
+        let spanEvent = document.createElement("span");
 
-        var span = document.createElement("span");
-        var taskSpan = document.createTextNode(task);
+        let span = document.createElement("span");
+        let taskSpan = document.createTextNode(task);
         span.appendChild(taskSpan);
         divTask.appendChild(span);
     }
 
     this.displayData = function(dateClicked){
 
-        var spans = document.getElementById(dateClicked).getElementsByTagName('span');
+        let spans = document.getElementById(dateClicked).getElementsByTagName('span');
 
-        var divTask = document.getElementById("divTask");
-        for(var i = 0, l = spans.length; i < l; i++){
+        let divTask = document.getElementById("divTask");
+        for(let i = 0, l = spans.length; i < l; i++){
             divTask.style.padding = "10px";
 
-            var taskSpanEvent = document.createTextNode(spans[i].textContent);
-            var spanEvent = document.createElement("span");
+            let taskSpanEvent = document.createTextNode(spans[i].textContent);
+            let spanEvent = document.createElement("span");
 
             spanEvent.appendChild(taskSpanEvent);
             divTask.appendChild(spanEvent);
@@ -321,8 +321,8 @@ function Event() {
 }
 
 function monthSwitchCreate() {
-    var div = document.createElement("div");
-    var p = document.createElement("p")
+    let div = document.createElement("div");
+    let p = document.createElement("p")
 }
 
  function daysInMonth(iMonth, iYear) {
@@ -331,13 +331,13 @@ function monthSwitchCreate() {
 
 function monthChange(months,cardDiv) {
     //Create and append select list
-    var selectList = document.createElement("select");
+    let selectList = document.createElement("select");
     selectList.setAttribute("id", "mySelect");
     cardDiv.appendChild(selectList);
 
     //Create and append the options
-    for (var i = 0; i < months.length; i++) {
-        var option = document.createElement("option");
+    for (let i = 0; i < months.length; i++) {
+        let option = document.createElement("option");
         option.setAttribute("value", months[i]);
         option.text = months[i];
         selectList.appendChild(option);
@@ -345,7 +345,7 @@ function monthChange(months,cardDiv) {
     }
     selectList.addEventListener('change', function(){
         console.log(this.value);
-        var detailDate = new Date(e.target.dataset.year, this.value, e.target.dataset.day);
+        let detailDate = new Date(e.target.dataset.year, this.value, e.target.dataset.day);
         setDayDetailView(eventDiv, detailDate)
       });
 
